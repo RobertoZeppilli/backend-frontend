@@ -1,0 +1,79 @@
+
+.dropdown-link {
+    font-size: 1.7rem;
+    color: $brilliantGreen;
+}
+
+.logout {
+    cursor: pointer;
+}
+
+.todolist {
+    width: 100%;
+    min-height: 180px;
+    background-color: #fff;
+
+    input[type="text"] {
+        outline: none;
+        color: #fff;
+        flex-grow: 3;
+        color: #191919;
+        border: 1px solid black;
+    }
+
+    input[type="submit"] {
+        flex-grow: 1;
+        border: 1px solid indigo;
+    }
+
+}
+
+
+.dropdown {
+    list-style: none;
+}
+
+.td-title {
+    background-color: $brilliantGreen;
+    position: relative;
+
+    h5 {
+        font-size: 1.7rem;
+    }
+
+    .fa-times {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: hsl(0, 40%, 54%);
+        cursor: pointer;
+    }
+
+
+}
+
+
+.no-list-message {
+    color: $brilliantGreen;
+}
+
+
+.todolist-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
+    grid-gap: 2em;
+}
+
+.todolist-1 {
+    display: grid;
+    grid-template-columns: 100%;
+}
+
+//hover dropdownc
+// &:hover {
+//     text-decoration: none;
+//     color: $brilliantGreen;
+//     transform: scale(1.1);
+//     border-radius: 5px;
+// }
