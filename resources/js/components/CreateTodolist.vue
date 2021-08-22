@@ -2,13 +2,13 @@
   <div
     class="d-flex flex-column align-items-center justify-content-center vh-100"
   >
-    <h2 class="page-title">create</h2>
+    <h2 class="page-title">create a new list</h2>
     <div class="form-container">
       <form action="#" @submit.prevent="create">
         <div class="form-data w-100">
           <input
             v-model="newTodolist.title"
-            class="w-100 px-2 py-2"
+            class="w-100 px-2 py-2 create-input"
             type="text"
             name="title"
             placeholder="Write a title..."

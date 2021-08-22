@@ -54,8 +54,24 @@ body {
 }
 
 
+a {
+    &:hover {
+        text-decoration: none;
+    }
+}
 
+ul {
+    list-style: none;
+}
 
+.fa-bars {
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}
 
 
 

@@ -4,7 +4,7 @@
       <div class="form-data w-100">
         <input
           v-model="form.email"
-          class="w-100 px-2 py-2"
+          class="w-100 px-2 py-2 home-input"
           type="email"
           placeholder="Enter email"
         />
@@ -15,7 +15,7 @@
           v-model="form.password"
           type="password"
           placeholder="Enter password"
-          class="w-100 px-2 py-2"
+          class="w-100 px-2 py-2 home-input"
         />
       </div>
 
@@ -29,7 +29,6 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 import { mapActions } from "vuex";
 import { mapGetters } from "vuex";
-// axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
 
 export default {
   name: "Login",

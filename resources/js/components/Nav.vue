@@ -1,30 +1,26 @@
 <template>
   <div v-if="user && authenticated" class="container p-0">
-    <div class="profile-settings d-flex align-items-center">
-      <div class="d-flex icon" ref="dropdownMenu">
-        <a href="" @click.prevent="dropdown = !dropdown">
-          <i
-            class="fas fa-4x"
-            :class="dropdown ? 'fa-ellipsis-h' : 'fa-ellipsis-v'"
-          ></i>
-        </a>
-        <div
-          v-if="dropdown"
-          class="ml-2 d-flex align-items-center justify-content-center"
-        >
-          <ul class="dropdown d-flex flex-column">
-            <li class="dropdown-link h-100">
-              {{ user.name }}
-            </li>
-            <li class="dropdown-link">
-              <router-link :to="{ name: 'create-todolist' }">Crea</router-link>
-            </li>
-            <li class="dropdown-link">
-              <a @click.prevent="logout" href="">Logout</a>
-            </li>
-          </ul>
-        </div>
-      </div>
+    <div class="profile-settings justify-content-between d-flex align-items-center">
+      <i
+        ref="dropdownMenu"
+        @click.prevent="dropdown = !dropdown"
+        class="fas fa-4x"
+        :class="dropdown ? 'fa-bars' : 'fa-bars'"
+      ></i>
+
+     
+      <ul v-if="dropdown" class="w-100 m-0 dropdown d-flex justify-content-around align-items-center">
+        <li class="dropdown-link">
+          <span >{{ user.name }}</span>
+        </li>
+        <li class="dropdown-link">
+          <router-link  :to="{ name: 'create-todolist' }">Crea</router-link>
+        </li>
+        <li class="dropdown-link">
+          <span  @click.prevent="logout" href="">Logout</span>
+        </li>
+      </ul>
+      
     </div>
   </div>
 </template>

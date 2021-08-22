@@ -42,4 +42,8 @@ class User extends Authenticatable
     public function todolists() {
         return $this->hasMany('App\Todolist');
     }
+
+    public function todos() {
+        return $this->hasMany('App\Todo');
+    }
 }

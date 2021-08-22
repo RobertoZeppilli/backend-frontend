@@ -6146,12 +6146,19 @@ readers do not read off random characters that represent icons */
   height: auto;
 }
 
-.form-data input {
-  background-color: rgba(0, 0, 0, 0.4);
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(102, 51, 87, 0.3), rgba(143, 51, 87, 0.2));
-  margin-bottom: 10px;
-  border-bottom: 1px solid #fff;
+input.home-input,
+input.create-input {
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(230, 128, 219, 0.8), #ffb3c4);
   color: #fff;
+  transition: all 0.4s ease-in-out;
+  margin-bottom: 10px;
+  font-size: clamp(.9rem, 1rem + 10vw, 1.7rem);
+}
+
+input.home-input:focus,
+input.create-input:focus {
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.4), rgba(230, 128, 219, 0.8), #ffffc4);
+  color: #00f5d4;
 }
 
 .btn-grad {
@@ -6188,6 +6195,22 @@ readers do not read off random characters that represent icons */
 .dropdown-link {
   font-size: 1.7rem;
   color: #00f5d4;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.dropdown-link:hover {
+  text-decoration: none;
+  color: #00f5d4;
+  transform: scale(1.1);
+}
+
+.dropdown-link a {
+  color: #00f5d4;
+}
+
+.dropdown-link a:hover {
+  color: #00f5d4;
 }
 
 .logout {
@@ -6195,44 +6218,51 @@ readers do not read off random characters that represent icons */
 }
 
 .todolist {
-  width: 100%;
-  min-height: 180px;
+  position: relative;
+  min-width: 10vw;
+  max-width: 100%;
+  min-height: 230px;
+  padding-bottom: 30px;
   background-color: #fff;
+  border-radius: 20px;
 }
 
 .todolist input[type=text] {
-  outline: none;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(230, 128, 219, 0.8), #ffb3c4);
   color: #fff;
+  transition: all 0.4s ease-in-out;
+  padding: 25px 0;
+  outline: none;
   flex-grow: 3;
-  color: #191919;
-  border: 1px solid black;
+  font-size: clamp(.9rem, 1rem + 10vw, 1.7rem);
 }
 
-.todolist input[type=submit] {
+.todolist input[type=text]:focus {
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.4), rgba(230, 128, 219, 0.8), #ffffc4);
+  color: #00f5d4;
+}
+
+.todolist button {
   flex-grow: 1;
-  border: 1px solid indigo;
-}
-
-.dropdown {
-  list-style: none;
+  padding: 30px 0;
 }
 
 .td-title {
   background-color: #00f5d4;
   position: relative;
+  border-radius: 20px 20px 0 0;
 }
 
 .td-title h5 {
   font-size: 1.7rem;
 }
 
-.td-title .fa-times {
+div .fa-times {
   position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #b95b5b;
+  bottom: 10px;
+  left: 10px;
   cursor: pointer;
+  color: red;
 }
 
 .no-list-message {
@@ -6248,6 +6278,13 @@ readers do not read off random characters that represent icons */
 .todolist-1 {
   display: grid;
   grid-template-columns: 100%;
+}
+
+.todo {
+  border-bottom: 1px solid #00f5d4;
+  padding: 10px;
+  font-size: 18px;
+  color: #00f5d4;
 }
 
 .loader {
@@ -17332,5 +17369,22 @@ body {
 
 .fas {
   color: #00f5d4;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+.fa-bars {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.fa-bars:hover {
+  transform: scale(1.1);
 }
 

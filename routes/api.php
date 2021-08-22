@@ -25,9 +25,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('todolists', 'TodolistController@store');
     Route::delete('todolists/{todolist}', 'TodolistController@destroy');
 
-    Route::post('todos', 'TodolistController@store');
-    Route::get('todos', 'TodolistController@index');
-    Route::delete('todos/{todo}', 'TodolistController@index');
+    Route::get('{todolist}/todos', 'TodoController@index');
+    Route::post('{todolist}/todos', 'TodoController@store');
+    Route::delete('todos/{todo}', 'TodoController@destroy');
 
     Route::get('user', 'UserController@index');
     Route::post('logout', 'AuthController@logout');

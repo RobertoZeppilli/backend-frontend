@@ -12,7 +12,7 @@ class TodolistController extends Controller
 {
     public function index() {
 
-        $userTodolist = Todolist::where('user_id', Auth::id())->orderBy('id', 'DESC')->get();
+        $userTodolist = Todolist::where('user_id', Auth::id())->orderBy('id', 'DESC')->with('todos')->get();
         
         return response()->json($userTodolist);
     }

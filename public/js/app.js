@@ -2050,6 +2050,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2061,25 +2077,56 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       todolists: [],
-      loading: true
+      loading: true,
+      todo: {
+        title: "",
+        todolist_id: "",
+        user_id: ""
+      }
     };
   },
-  methods: {
-    getTodoLists: function getTodoLists() {
+  computed: {
+    prova: function prova() {
       var _this = this;
 
+      this.todolists.forEach(function (todolist) {
+        if (_this.todo.todolist_id != todolist.id) {
+          _this.todo.title = "";
+          console.log(_this.todo.title);
+        }
+      });
+    }
+  },
+  //serve un setter per il computed, problema quasi risolto, fare la post dallo store//
+  methods: {
+    getTodoLists: function getTodoLists() {
+      var _this2 = this;
+
       axios.get("http://127.0.0.1:8000/api/todolists").then(function (res) {
-        _this.todolists = res.data;
-        _this.loading = false;
+        _this2.todolists = res.data;
+        console.log("todolists: ", res.data);
+        _this2.loading = false;
       })["catch"](function (err) {
         console.log(err);
       });
     },
     cancel: function cancel(id) {
-      var _this2 = this;
+      var _this3 = this;
 
       axios["delete"]("http://127.0.0.1:8000/api/todolists/".concat(id)).then(function () {
-        _this2.getTodoLists();
+        _this3.getTodoLists();
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    },
+    addTodo: function addTodo(todolist) {
+      var _this4 = this;
+
+      axios.post("http://127.0.0.1:8000/api/".concat(todolist, "/todos"), this.todo).then(function () {
+        console.log("todo added: ", _this4.todo);
+        _this4.todo = {};
+
+        _this4.getTodoLists();
       })["catch"](function (err) {
         console.log(err);
       });
@@ -2203,7 +2250,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.withCredentials = true;
 
- // axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Login",
@@ -2258,10 +2304,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
-//
-//
 //
 //
 //
@@ -21001,7 +21043,7 @@ var render = function() {
         "d-flex flex-column align-items-center justify-content-center vh-100"
     },
     [
-      _c("h2", { staticClass: "page-title" }, [_vm._v("create")]),
+      _c("h2", { staticClass: "page-title" }, [_vm._v("create a new list")]),
       _vm._v(" "),
       _c("div", { staticClass: "form-container" }, [
         _c(
@@ -21026,7 +21068,7 @@ var render = function() {
                     expression: "newTodolist.title"
                   }
                 ],
-                staticClass: "w-100 px-2 py-2",
+                staticClass: "w-100 px-2 py-2 create-input",
                 attrs: {
                   type: "text",
                   name: "title",
@@ -21094,14 +21136,18 @@ var render = function() {
     [
       _c(
         "div",
-        { staticClass: "d-flex align-items-center" },
-        [
-          _c("Nav"),
-          _vm._v(" "),
-          _c("h2", { staticClass: "m-0 page-title" }, [_vm._v("Lists")])
-        ],
+        { staticClass: "d-flex align-items-center py-2" },
+        [_c("Nav")],
         1
       ),
+      _vm._v(" "),
+      _c("h2", { staticClass: "m-0 page-title" }, [
+        _vm._v(
+          "\n    " +
+            _vm._s(_vm.todolists.length > 1 ? "my lists" : "my list") +
+            "\n  "
+        )
+      ]),
       _vm._v(" "),
       _vm.todolists.length > 0 && !_vm.loading
         ? _c(
@@ -21117,21 +21163,72 @@ var render = function() {
                     _vm._v(
                       "\n          " + _vm._s(todolist.title) + "\n        "
                     )
-                  ]),
-                  _vm._v(" "),
-                  _c("i", {
-                    staticClass: "fas fa-times",
-                    on: {
-                      click: function($event) {
-                        return _vm.cancel(todolist.id)
-                      }
-                    }
-                  })
+                  ])
                 ]),
                 _vm._v(" "),
-                _vm._m(0, true),
+                _c(
+                  "form",
+                  {
+                    staticClass:
+                      "td-inputs d-flex align-items-center justify-content-center",
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        return _vm.addTodo(todolist.id)
+                      }
+                    }
+                  },
+                  [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.prova,
+                          expression: "prova"
+                        }
+                      ],
+                      staticClass: "px-2",
+                      attrs: { type: "text" },
+                      domProps: { value: _vm.prova },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.prova = $event.target.value
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm._m(0, true)
+                  ]
+                ),
                 _vm._v(" "),
-                _vm._m(1, true)
+                _c(
+                  "div",
+                  [
+                    _vm._l(todolist.todos, function(item) {
+                      return _c("div", { key: item.id, staticClass: "todo" }, [
+                        _vm._v(
+                          "\n          " + _vm._s(item.title) + "\n        "
+                        )
+                      ])
+                    }),
+                    _vm._v(" "),
+                    _c("div", [
+                      _c("i", {
+                        staticClass: "fas fa-times",
+                        on: {
+                          click: function($event) {
+                            return _vm.cancel(todolist.id)
+                          }
+                        }
+                      })
+                    ])
+                  ],
+                  2
+                )
               ])
             }),
             0
@@ -21176,25 +21273,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "td-inputs d-flex align-items-center justify-content-center"
-      },
-      [
-        _c("input", { staticClass: "px-2", attrs: { type: "text" } }),
-        _vm._v(" "),
-        _c("input", { attrs: { type: "submit", value: "Add" } })
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "px-2" }, [
-      _c("p", [_vm._v("todo goes here")])
+    return _c("button", { attrs: { type: "submit" } }, [
+      _c("i", { staticClass: "fas fa-plus fa-2x" })
     ])
   }
 ]
@@ -21226,7 +21306,7 @@ var render = function() {
         "d-flex flex-column align-items-center justify-content-center vh-100"
     },
     [
-      _c("h1", { staticClass: "page-title" }, [_vm._v("home")]),
+      _c("h1", { staticClass: "page-title" }, [_vm._v("todoodle")]),
       _vm._v(" "),
       _c(
         "div",
@@ -21353,7 +21433,7 @@ var render = function() {
                 expression: "form.email"
               }
             ],
-            staticClass: "w-100 px-2 py-2",
+            staticClass: "w-100 px-2 py-2 home-input",
             attrs: { type: "email", placeholder: "Enter email" },
             domProps: { value: _vm.form.email },
             on: {
@@ -21377,7 +21457,7 @@ var render = function() {
                 expression: "form.password"
               }
             ],
-            staticClass: "w-100 px-2 py-2",
+            staticClass: "w-100 px-2 py-2 home-input",
             attrs: { type: "password", placeholder: "Enter password" },
             domProps: { value: _vm.form.password },
             on: {
@@ -21426,78 +21506,66 @@ var render = function() {
     ? _c("div", { staticClass: "container p-0" }, [
         _c(
           "div",
-          { staticClass: "profile-settings d-flex align-items-center" },
+          {
+            staticClass:
+              "profile-settings justify-content-between d-flex align-items-center"
+          },
           [
-            _c("div", { ref: "dropdownMenu", staticClass: "d-flex icon" }, [
-              _c(
-                "a",
-                {
-                  attrs: { href: "" },
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      _vm.dropdown = !_vm.dropdown
-                    }
-                  }
-                },
-                [
-                  _c("i", {
-                    staticClass: "fas fa-4x",
-                    class: _vm.dropdown ? "fa-ellipsis-h" : "fa-ellipsis-v"
-                  })
-                ]
-              ),
-              _vm._v(" "),
-              _vm.dropdown
-                ? _c(
-                    "div",
-                    {
-                      staticClass:
-                        "ml-2 d-flex align-items-center justify-content-center"
-                    },
-                    [
-                      _c("ul", { staticClass: "dropdown d-flex flex-column" }, [
-                        _c("li", { staticClass: "dropdown-link h-100" }, [
-                          _vm._v(
-                            "\n            " +
-                              _vm._s(_vm.user.name) +
-                              "\n          "
-                          )
-                        ]),
-                        _vm._v(" "),
+            _c("i", {
+              ref: "dropdownMenu",
+              staticClass: "fas fa-4x",
+              class: _vm.dropdown ? "fa-bars" : "fa-bars",
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  _vm.dropdown = !_vm.dropdown
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.dropdown
+              ? _c(
+                  "ul",
+                  {
+                    staticClass:
+                      "w-100 m-0 dropdown d-flex justify-content-around align-items-center"
+                  },
+                  [
+                    _c("li", { staticClass: "dropdown-link" }, [
+                      _c("span", [_vm._v(_vm._s(_vm.user.name))])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "li",
+                      { staticClass: "dropdown-link" },
+                      [
                         _c(
-                          "li",
-                          { staticClass: "dropdown-link" },
-                          [
-                            _c(
-                              "router-link",
-                              { attrs: { to: { name: "create-todolist" } } },
-                              [_vm._v("Crea")]
-                            )
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c("li", { staticClass: "dropdown-link" }, [
-                          _c(
-                            "a",
-                            {
-                              attrs: { href: "" },
-                              on: {
-                                click: function($event) {
-                                  $event.preventDefault()
-                                  return _vm.logout.apply(null, arguments)
-                                }
-                              }
-                            },
-                            [_vm._v("Logout")]
-                          )
-                        ])
-                      ])
-                    ]
-                  )
-                : _vm._e()
-            ])
+                          "router-link",
+                          { attrs: { to: { name: "create-todolist" } } },
+                          [_vm._v("Crea")]
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("li", { staticClass: "dropdown-link" }, [
+                      _c(
+                        "span",
+                        {
+                          attrs: { href: "" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.logout.apply(null, arguments)
+                            }
+                          }
+                        },
+                        [_vm._v("Logout")]
+                      )
+                    ])
+                  ]
+                )
+              : _vm._e()
           ]
         )
       ])
@@ -21556,7 +21624,7 @@ var render = function() {
                     expression: "form.name"
                   }
                 ],
-                staticClass: "w-100 px-2 py-2",
+                staticClass: "w-100 px-2 py-2 home-input",
                 attrs: { type: "text", placeholder: "Enter name" },
                 domProps: { value: _vm.form.name },
                 on: {
@@ -21580,7 +21648,7 @@ var render = function() {
                     expression: "form.email"
                   }
                 ],
-                staticClass: "w-100 px-2 py-2",
+                staticClass: "w-100 px-2 py-2 home-input",
                 attrs: { type: "email", placeholder: "Enter email" },
                 domProps: { value: _vm.form.email },
                 on: {
@@ -21604,7 +21672,7 @@ var render = function() {
                     expression: "form.password"
                   }
                 ],
-                staticClass: "w-100 px-2 py-2",
+                staticClass: "w-100 px-2 py-2 home-input",
                 attrs: { type: "password", placeholder: "Enter password" },
                 domProps: { value: _vm.form.password },
                 on: {
@@ -21628,7 +21696,7 @@ var render = function() {
                     expression: "form.password_confirmation"
                   }
                 ],
-                staticClass: "w-100 px-2 py-2",
+                staticClass: "w-100 px-2 py-2 home-input",
                 attrs: { type: "password", placeholder: "Confirm password" },
                 domProps: { value: _vm.form.password_confirmation },
                 on: {

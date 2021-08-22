@@ -45,14 +45,14 @@
               v-model="form.name"
               type="text"
               placeholder="Enter name"
-              class="w-100 px-2 py-2"
+              class="w-100 px-2 py-2 home-input"
             />
           </div>
 
           <div class="form-data w-100">
             <input
               v-model="form.email"
-              class="w-100 px-2 py-2"
+              class="w-100 px-2 py-2 home-input"
               type="email"
               placeholder="Enter email"
             />
@@ -63,7 +63,7 @@
               v-model="form.password"
               type="password"
               placeholder="Enter password"
-              class="w-100 px-2 py-2"
+              class="w-100 px-2 py-2 home-input"
             />
           </div>
 
@@ -72,7 +72,7 @@
               v-model="form.password_confirmation"
               type="password"
               placeholder="Confirm password"
-              class="w-100 px-2 py-2"
+              class="w-100 px-2 py-2 home-input"
             />
           </div>
 

@@ -6,7 +6,7 @@ export default {
     namespaced: true,
 
     state: {
-        newTodolist: null,
+        newTodolist: null
     },
 
     actions: {

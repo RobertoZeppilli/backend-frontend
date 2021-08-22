@@ -1,23 +1,39 @@
 <template>
   <div class="container">
-    <div class="d-flex align-items-center">
+    <div class="d-flex align-items-center py-2">
       <Nav />
-      <h2 class="m-0 page-title">Lists</h2>
     </div>
-    <div v-if="todolists.length > 0 && !loading" class="todolist-row h-100 py-5" :class="todolists.length == 1 ? 'todolist-1' : '' ">
+    <h2 class="m-0 page-title">
+      {{ todolists.length > 1 ? "my lists" : "my list" }}
+    </h2>
+    <div
+      v-if="todolists.length > 0 && !loading"
+      class="todolist-row h-100 py-5"
+      :class="todolists.length == 1 ? 'todolist-1' : ''"
+    >
       <div class="todolist" v-for="todolist in todolists" :key="todolist.id">
         <div class="td-title">
           <h5 class="text-center m-0 py-2 text-light">
             {{ todolist.title }}
           </h5>
-          <i class="fas fa-times" @click="cancel(todolist.id)"></i>
         </div>
-        <div class="td-inputs d-flex align-items-center justify-content-center">
-          <input class="px-2" type="text" />
-          <input type="submit" value="Add" />
-        </div>
-        <div class="px-2">
-          <p>todo goes here</p>
+        <form
+          @submit.prevent="addTodo(todolist.id)"
+          class="td-inputs d-flex align-items-center justify-content-center"
+        >
+          <input v-model="prova" class="px-2" type="text" />
+          <button type="submit">
+            <i class="fas fa-plus fa-2x"></i>
+          </button>
+        </form>
+        <div>
+          <div v-for="item in todolist.todos" :key="item.id" class="todo">
+            {{ item.title }}
+          </div>
+
+          <div>
+            <i class="fas fa-times" @click="cancel(todolist.id)"></i>
+          </div>
         </div>
       </div>
     </div>
@@ -46,15 +62,33 @@ export default {
 
   components: {
     Loader,
-    Nav
+    Nav,
   },
 
   data() {
     return {
       todolists: [],
       loading: true,
+      todo: {
+        title: "",
+        todolist_id: "",
+        user_id: "",
+      },
     };
   },
+
+  computed: {
+    prova() {
+      this.todolists.forEach((todolist) => {
+        if (this.todo.todolist_id != todolist.id) {
+          this.todo.title = "";
+          console.log(this.todo.title);
+        }
+      });
+    },
+  },
+
+  //serve un setter per il computed, problema quasi risolto, fare la post dallo store//
 
   methods: {
     getTodoLists() {
@@ -62,6 +96,7 @@ export default {
         .get("http://127.0.0.1:8000/api/todolists")
         .then((res) => {
           this.todolists = res.data;
+          console.log("todolists: ", res.data);
           this.loading = false;
         })
         .catch((err) => {
@@ -79,13 +114,22 @@ export default {
           console.log(err);
         });
     },
-
-    
+    addTodo(todolist) {
+      axios
+        .post(`http://127.0.0.1:8000/api/${todolist}/todos`, this.todo)
+        .then(() => {
+          console.log("todo added: ", this.todo);
+          this.todo = {};
+          this.getTodoLists();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 
   created() {
     this.getTodoLists();
-    
   },
 };
 </script>

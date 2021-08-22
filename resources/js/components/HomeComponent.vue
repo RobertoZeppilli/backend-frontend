@@ -2,7 +2,7 @@
   <div
     class="d-flex flex-column align-items-center justify-content-center vh-100"
   >
-    <h1 class="page-title">home</h1>
+    <h1 class="page-title">todoodle</h1>
     <div>
 
       <login-form></login-form>
