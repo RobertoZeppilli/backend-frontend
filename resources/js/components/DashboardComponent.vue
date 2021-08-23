@@ -21,7 +21,7 @@
           @submit.prevent="addTodo(todolist.id)"
           class="td-inputs d-flex align-items-center justify-content-center"
         >
-          <input v-model="prova" class="px-2" type="text" />
+          <input v-model="getTitle" class="px-2" type="text" />
           <button type="submit">
             <i class="fas fa-plus fa-2x"></i>
           </button>
@@ -74,21 +74,25 @@ export default {
         todolist_id: "",
         user_id: "",
       },
+      todolist_ids: []
     };
   },
 
+  
+
   computed: {
-    prova() {
-      this.todolists.forEach((todolist) => {
-        if (this.todo.todolist_id != todolist.id) {
-          this.todo.title = "";
-          console.log(this.todo.title);
-        }
-      });
+    getTitle: {
+      get: function () {
+        return "";
+      },
+
+      set: function (value) {
+        
+        this.todo.title = value;
+       
+      },
     },
   },
-
-  //serve un setter per il computed, problema quasi risolto, fare la post dallo store//
 
   methods: {
     getTodoLists() {

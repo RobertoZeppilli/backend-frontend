@@ -2082,51 +2082,49 @@ __webpack_require__.r(__webpack_exports__);
         title: "",
         todolist_id: "",
         user_id: ""
-      }
+      },
+      todolist_ids: []
     };
   },
   computed: {
-    prova: function prova() {
-      var _this = this;
-
-      this.todolists.forEach(function (todolist) {
-        if (_this.todo.todolist_id != todolist.id) {
-          _this.todo.title = "";
-          console.log(_this.todo.title);
-        }
-      });
+    getTitle: {
+      get: function get() {
+        return "";
+      },
+      set: function set(value) {
+        this.todo.title = value;
+      }
     }
   },
-  //serve un setter per il computed, problema quasi risolto, fare la post dallo store//
   methods: {
     getTodoLists: function getTodoLists() {
-      var _this2 = this;
+      var _this = this;
 
       axios.get("http://127.0.0.1:8000/api/todolists").then(function (res) {
-        _this2.todolists = res.data;
+        _this.todolists = res.data;
         console.log("todolists: ", res.data);
-        _this2.loading = false;
+        _this.loading = false;
       })["catch"](function (err) {
         console.log(err);
       });
     },
     cancel: function cancel(id) {
-      var _this3 = this;
+      var _this2 = this;
 
       axios["delete"]("http://127.0.0.1:8000/api/todolists/".concat(id)).then(function () {
-        _this3.getTodoLists();
+        _this2.getTodoLists();
       })["catch"](function (err) {
         console.log(err);
       });
     },
     addTodo: function addTodo(todolist) {
-      var _this4 = this;
+      var _this3 = this;
 
       axios.post("http://127.0.0.1:8000/api/".concat(todolist, "/todos"), this.todo).then(function () {
-        console.log("todo added: ", _this4.todo);
-        _this4.todo = {};
+        console.log("todo added: ", _this3.todo);
+        _this3.todo = {};
 
-        _this4.getTodoLists();
+        _this3.getTodoLists();
       })["catch"](function (err) {
         console.log(err);
       });
@@ -21184,19 +21182,19 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.prova,
-                          expression: "prova"
+                          value: _vm.getTitle,
+                          expression: "getTitle"
                         }
                       ],
                       staticClass: "px-2",
                       attrs: { type: "text" },
-                      domProps: { value: _vm.prova },
+                      domProps: { value: _vm.getTitle },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.prova = $event.target.value
+                          _vm.getTitle = $event.target.value
                         }
                       }
                     }),
