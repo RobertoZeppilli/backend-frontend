@@ -59,40 +59,55 @@
 
 
 
-.td-title {
-    background-color: $brilliantGreen;
-    position: relative;
-    border-radius: 20px 20px 0 0;
 
-    h5 {
-        font-size: 1.7rem;
-    }
 
     
-    
-}
-
-div {
-    .fa-times {
-        position: absolute;
-        bottom: 10px;
-        left: 10px;
-        cursor: pointer;
-        color: red;
-    }
-}
 
 
 
-.no-list-message {
-    color: $brilliantGreen;
-}
+
+
 
 
 .todolist-row {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
     grid-gap: 2em;
+
+    
+    .td-title {
+        background-color: $brilliantGreen;
+        position: relative;
+        border-radius: 20px 20px 0 0;
+
+        h5 {
+            font-size: 1.7rem;
+        }
+
+        .delete {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            display: none;
+            
+            .fa-trash {
+                cursor: pointer;
+                color: red;
+                transition: all .2s ease-in-out;
+
+                &:hover {
+                    transform: scale(0.7);
+                }
+            }
+        }
+
+        &:hover .delete {
+            display: block;
+        }
+    
+    }
 }
 
 .todolist-1 {
@@ -106,4 +121,32 @@ div {
     padding: 10px;
     font-size: 18px;
     color: $brilliantGreen;
+
+    &:hover .trash{
+        display: block;
+    }
+}
+
+.trash {
+    display: none;
+    transition: all .3s ease-in-out;
+
+    .fa-trash {
+        color: red;
+        cursor: pointer;
+        &:hover {
+            transform: scale(0.7);
+        }
+    }
+
+}
+
+.invalid {
+    border: 1px solid red;
+}
+
+.error {
+    position: absolute;
+    top: -5px;
+    left: 0;
 }

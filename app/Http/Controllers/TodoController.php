@@ -8,25 +8,37 @@ use App\Todolist;
 use App\User;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class TodoController extends Controller
 {
 
-    // public function index() {
-    //     return Todo::where('user_id', Auth::id())->with('todolist')->get();
-    // }
+    public function store(Request $request, Todolist $todolist)
+    {
+        $todo = $request->all();
 
-    public function store(Request $request, Todolist $todolist) {
-        $newTodo = Todo::create([
-            'title' => $request->title,
-            'user_id' => Auth::id(),
-            'todolist_id' => $todolist->id
+        $validator = Validator::make($todo, [
+            'title' => 'required'
         ]);
         
-        return $newTodo;
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors()
+            ]);
+        } else {
+            $newTodo = Todo::create([
+                'title' => $request->title,
+                'user_id' => Auth::id(),
+                'todolist_id' => $todolist->id
+            ]);
+        }
+
+
+        return response()->json($newTodo);
     }
 
-    public function destroy(Todo $todo) {
+    public function destroy(Todo $todo)
+    {
         $todo->delete();
     }
 }

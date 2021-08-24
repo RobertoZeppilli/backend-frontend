@@ -6151,7 +6151,6 @@ input.create-input {
   background: linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(230, 128, 219, 0.8), #ffb3c4);
   color: #fff;
   transition: all 0.4s ease-in-out;
-  margin-bottom: 10px;
   font-size: clamp(.9rem, 1rem + 10vw, 1.7rem);
 }
 
@@ -6159,6 +6158,10 @@ input.home-input:focus,
 input.create-input:focus {
   background: linear-gradient(to left, rgba(0, 0, 0, 0.4), rgba(230, 128, 219, 0.8), #ffffc4);
   color: #00f5d4;
+}
+
+.form-data {
+  margin-bottom: 10px;
 }
 
 .btn-grad {
@@ -6247,32 +6250,43 @@ input.create-input:focus {
   padding: 30px 0;
 }
 
-.td-title {
+.todolist-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
+  grid-gap: 2em;
+}
+
+.todolist-row .td-title {
   background-color: #00f5d4;
   position: relative;
   border-radius: 20px 20px 0 0;
 }
 
-.td-title h5 {
+.todolist-row .td-title h5 {
   font-size: 1.7rem;
 }
 
-div .fa-times {
+.todolist-row .td-title .delete {
   position: absolute;
-  bottom: 10px;
-  left: 10px;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  display: none;
+}
+
+.todolist-row .td-title .delete .fa-trash {
   cursor: pointer;
   color: red;
+  transition: all 0.2s ease-in-out;
 }
 
-.no-list-message {
-  color: #00f5d4;
+.todolist-row .td-title .delete .fa-trash:hover {
+  transform: scale(0.7);
 }
 
-.todolist-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr));
-  grid-gap: 2em;
+.todolist-row .td-title:hover .delete {
+  display: block;
 }
 
 .todolist-1 {
@@ -6285,6 +6299,34 @@ div .fa-times {
   padding: 10px;
   font-size: 18px;
   color: #00f5d4;
+}
+
+.todo:hover .trash {
+  display: block;
+}
+
+.trash {
+  display: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.trash .fa-trash {
+  color: red;
+  cursor: pointer;
+}
+
+.trash .fa-trash:hover {
+  transform: scale(0.7);
+}
+
+.invalid {
+  border: 1px solid red;
+}
+
+.error {
+  position: absolute;
+  top: -5px;
+  left: 0;
 }
 
 .loader {
@@ -17368,6 +17410,14 @@ body {
 }
 
 .fas {
+  color: #00f5d4;
+}
+
+.fa-times {
+  color: red;
+}
+
+.no-list-message {
   color: #00f5d4;
 }
 

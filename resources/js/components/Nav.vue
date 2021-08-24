@@ -10,13 +10,13 @@
 
      
       <ul v-if="dropdown" class="w-100 m-0 dropdown d-flex justify-content-around align-items-center">
-        <li class="dropdown-link">
+        <li class="dropdown-link animate__animated animate__flipInX">
           <span >{{ user.name }}</span>
         </li>
-        <li class="dropdown-link">
+        <li class="dropdown-link animate__animated animate__flipInX">
           <router-link  :to="{ name: 'create-todolist' }">Crea</router-link>
         </li>
-        <li class="dropdown-link">
+        <li class="dropdown-link animate__animated animate__flipInX">
           <span  @click.prevent="logout" href="">Logout</span>
         </li>
       </ul>
@@ -74,4 +74,3 @@ export default {
 
 
 
-<i class="fas fa-ellipsis-v"></i>

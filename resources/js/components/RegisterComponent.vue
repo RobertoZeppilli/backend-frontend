@@ -1,97 +1,113 @@
 <template>
-  <!-- <div>
-    <div class="container">
-      <h4>Register</h4>
-      <form action="#" @submit.prevent="submitRegistration" id="register">
-        <div class="form-row">
-          <input v-model="form.name" type="text" placeholder="Enter name" />
+  <div
+    class="d-flex flex-column align-items-center justify-content-center vh-100"
+  >
+    <h2 class="page-title animate__animated animate__fadeInLeftBig">
+      register
+    </h2>
+    <div
+      class="
+        form-container
+        animate__animated animate__fadeInLeftBig animate__delay-2s
+      "
+    >
+      <form @submit.prevent="submitRegistration(form)">
+        <div class="form-data w-100">
+          <input
+            v-model="form.name"
+            type="text"
+            placeholder="Enter name"
+            class="w-100 px-2 py-2 home-input"
+            :class="errors && errors.name ? 'invalid' : ''"
+          />
+          <div v-if="errors" class="animate__animated animate__fadeIn">
+            <small
+              class="text-danger"
+              v-for="(error, index) in errors.name"
+              :key="index"
+              >{{ error }}</small
+            >
+          </div>
         </div>
-        <div class="form-row">
-          <input v-model="form.email" type="email" placeholder="Enter email" />
+
+        <div class="form-data w-100">
+          <input
+            v-model="form.email"
+            class="w-100 px-2 py-2 home-input"
+            type="email"
+            placeholder="Enter email"
+            :class="errors && errors.email ? 'invalid' : ''"
+          />
+          <div v-if="errors" class="animate__animated animate__fadeIn">
+            <small
+              class="text-danger"
+              v-for="(error, index) in errors.email"
+              :key="index"
+              >{{ error }}</small
+            >
+          </div>
         </div>
-        <div class="form-row">
+
+        <div class="form-data w-100">
           <input
             v-model="form.password"
             type="password"
             placeholder="Enter password"
+            class="w-100 px-2 py-2 home-input"
+            :class="errors && errors.password ? 'invalid' : ''"
           />
-           <div v-if="errors.name && errors">{{ errors.name[0] }}</div> 
+          <div v-if="errors" class="animate__animated animate__fadeIn">
+            <small
+              class="text-danger"
+              v-for="(error, index) in errors.password"
+              :key="index"
+              >{{ error }}</small
+            >
+          </div>
         </div>
-        <div class="form-row">
+
+        <div class="form-data mb-2 w-100">
           <input
             v-model="form.password_confirmation"
             type="password"
             placeholder="Confirm password"
+            class="w-100 px-2 py-2 home-input"
+            :class="errors && errors.password ? 'invalid' : ''"
           />
+          <div v-if="errors" class="animate__animated animate__fadeIn">
+            <small
+              class="text-danger"
+              v-for="(error, index) in errors.password_confirmation"
+              :key="index"
+              >{{ error }}</small
+            >
+          </div>
         </div>
-        <button class="btn" type="submit">Register</button>
+
+        <button class="btn-grad w-100" type="submit">Sign Up</button>
       </form>
-      <div v-for="(error, index) in errors" :key="index">{{ error }}</div>
     </div>
-  </div> -->
-  
-    <div
-      class="d-flex
-            flex-column
-            align-items-center
-            justify-content-center
-            vh-100"
-    >
-      <h2 class="page-title">register</h2>
-      <div class="form-container">
-        <form  @submit.prevent="submitRegistration">
-          <div class="form-data w-100">
-            <input
-              v-model="form.name"
-              type="text"
-              placeholder="Enter name"
-              class="w-100 px-2 py-2 home-input"
-            />
-          </div>
-
-          <div class="form-data w-100">
-            <input
-              v-model="form.email"
-              class="w-100 px-2 py-2 home-input"
-              type="email"
-              placeholder="Enter email"
-            />
-          </div>
-
-          <div class="form-data w-100">
-            <input
-              v-model="form.password"
-              type="password"
-              placeholder="Enter password"
-              class="w-100 px-2 py-2 home-input"
-            />
-          </div>
-
-          <div class="form-data mb-2 w-100">
-            <input
-              v-model="form.password_confirmation"
-              type="password"
-              placeholder="Confirm password"
-              class="w-100 px-2 py-2 home-input"
-            />
-          </div>
-
-          <button class="btn-grad w-100" type="submit">Sign Up</button>
-        </form>
-      </div>
-      <div class="back">
-        <router-link :to="{ name: 'home' }">
-          <i class="fas fa-hand-point-left fa-2x"></i>
-        </router-link>
-      </div>
+    <div class="back animate__animated animate__fadeInLeftBig animate__delay-3s">
+      <router-link :to="{ name: 'home' }">
+        <i
+          class="
+            fas
+            fa-hand-point-left fa-2x
+            animate__animated
+            animate__heartBeat
+            animate__infinite
+          "
+        ></i>
+      </router-link>
     </div>
+  </div>
 </template>
 
 <script>
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
-import { mapActions } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Register",
@@ -104,17 +120,32 @@ export default {
         password: "",
         password_confirmation: "",
       },
+      errors: null,
     };
   },
 
-  methods: {
-    ...mapActions({
-      register: "auth/register",
+  computed: {
+    ...mapGetters({
+      user: "auth/user",
     }),
+  },
 
-    submitRegistration() {
-      this.register(this.form);
-      this.$router.push({ name: "home" });
+  methods: {
+    submitRegistration(credentials) {
+      axios
+        .post("http://127.0.0.1:8000/api/register", credentials)
+        .then((res) => {
+          if (res.data.errors) {
+            this.errors = res.data.errors;
+          } else {
+            this.errors = null;
+
+            this.$router.push({ name: "home" });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };

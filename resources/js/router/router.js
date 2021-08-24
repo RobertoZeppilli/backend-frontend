@@ -33,13 +33,13 @@ const router = new VueRouter({
             name: 'dashboard',
             component: DashboardComponent,
             beforeEnter: (to, from, next) => {
-                if(!store.getters['auth/authenticated']) {
+                if (!store.getters['auth/authenticated']) {
                     return next({
                         name: 'home'
                     })
+                } else {
+                    next()
                 }
-
-                next()
             }
         },
         {

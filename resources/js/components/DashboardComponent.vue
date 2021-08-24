@@ -3,7 +3,7 @@
     <div class="d-flex align-items-center py-2">
       <Nav />
     </div>
-    <h2 class="m-0 page-title">
+    <h2 class="m-0 page-title animate__animated animate__fadeInLeftBig">
       {{ todolists.length > 1 ? "my lists" : "my list" }}
     </h2>
     <div
@@ -11,11 +11,25 @@
       class="todolist-row h-100 py-5"
       :class="todolists.length == 1 ? 'todolist-1' : ''"
     >
-      <div class="todolist" v-for="todolist in todolists" :key="todolist.id">
+      <div class="error animate__animated animate__fadeInLeftBig" v-if="todoErrors">
+        <div
+          class="text-danger alert-danger p-2"
+          v-for="(error, index) in todoErrors.title"
+          :key="index"
+        >
+          <span>{{ error }}</span>
+          <i class="fas fa-times" @click="todoErrors = !todoErrors"></i>
+          <!-- <span></span> -->
+        </div>
+      </div>
+      <div class="todolist animate__animated animate__fadeInLeftBig animate__delay-2s" v-for="todolist in todolists" :key="todolist.id">
         <div class="td-title">
           <h5 class="text-center m-0 py-2 text-light">
             {{ todolist.title }}
           </h5>
+          <div class="delete">
+            <i class="fas fa-trash fa-2x" @click="cancel(todolist.id)"></i>
+          </div>
         </div>
         <form
           @submit.prevent="addTodo(todolist.id)"
@@ -27,12 +41,15 @@
           </button>
         </form>
         <div>
-          <div v-for="item in todolist.todos" :key="item.id" class="todo">
-            {{ item.title }}
-          </div>
-
-          <div>
-            <i class="fas fa-times" @click="cancel(todolist.id)"></i>
+          <div
+            class="todo d-flex justify-content-between align-items-center animate__animated animate__zoomIn"
+            v-for="todo in todolist.todos"
+            :key="todo.id"
+          >
+            <span>{{ todo.title }}</span>
+            <span class="trash">
+              <i class="fas fa-trash" @click="deleteTodo(todo.id)"></i>
+            </span>
           </div>
         </div>
       </div>
@@ -71,14 +88,10 @@ export default {
       loading: true,
       todo: {
         title: "",
-        todolist_id: "",
-        user_id: "",
       },
-      todolist_ids: []
+      todoErrors: null,
     };
   },
-
-  
 
   computed: {
     getTitle: {
@@ -87,9 +100,7 @@ export default {
       },
 
       set: function (value) {
-        
         this.todo.title = value;
-       
       },
     },
   },
@@ -121,9 +132,23 @@ export default {
     addTodo(todolist) {
       axios
         .post(`http://127.0.0.1:8000/api/${todolist}/todos`, this.todo)
-        .then(() => {
-          console.log("todo added: ", this.todo);
+        .then((res) => {
+          if (res.data.errors) {
+            this.todoErrors = res.data.errors;
+          }
+
           this.todo = {};
+          this.getTodoLists();
+        })
+        .catch((err) => {
+          console.log("errore", err);
+        });
+    },
+
+    deleteTodo(todo) {
+      axios
+        .delete(`http://127.0.0.1:8000/api/todos/${todo}`)
+        .then(() => {
           this.getTodoLists();
         })
         .catch((err) => {

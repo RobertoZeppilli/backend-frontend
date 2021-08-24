@@ -10,7 +10,7 @@ input.create-input {
   background: linear-gradient(to right, rgba(0, 0, 0, 0.4), rgba(90%, 50%, 86%, 0.8), rgba(100%, 70%, 77%));
   color: #fff;
   transition: all .4s ease-in-out;
-  margin-bottom: 10px;
+  // margin-bottom: 10px;
  
   font-size: clamp(.9rem, 1rem + 10vw, 1.7rem);
 
@@ -20,6 +20,10 @@ input.create-input {
   }
 }
 
+
+.form-data {
+  margin-bottom: 10px;
+}
 
 
 

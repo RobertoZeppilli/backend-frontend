@@ -1,11 +1,10 @@
 import axios from 'axios';
-import { attempt } from 'lodash';
 
 export default {
     namespaced: true,
     state: {
         token: null,
-        form: null
+        form: null,
     },
 
     getters: {
@@ -15,7 +14,7 @@ export default {
 
         user(state) {
             return state.form
-        }
+        },
     },
 
     mutations: {
@@ -30,19 +29,20 @@ export default {
     },
 
     actions: {
-        async login({ dispatch }, credentials) {
+        // async login({ dispatch }, credentials) {
             
-            await axios.post('http://127.0.0.1:8000/api/login', credentials).then(res => {
-                if (res.data.success) {
-                    console.log(res.data)
-
-                    // controllo se il token è buono
-                    return dispatch('attempt', res.data.token)
-                }
-            }).catch(err => {
-                console.log(err)
-            })
-        },
+        //    await axios.post('http://127.0.0.1:8000/api/login', credentials)            
+        //     .then( res => {
+        //         console.log(res.data)
+        //         if (res.data.success) {
+        //             // controllo se il token è buono
+        //             return dispatch('attempt', res.data.token)
+        //         } 
+        //     })
+        //     .catch( err => {
+        //         console.log( err )
+        //     })
+        // },
 
         async attempt({ commit, state }, token) {
 
@@ -70,12 +70,21 @@ export default {
             }
         },
 
-        async register({ }, credentials) {
-            await axios.post('http://127.0.0.1:8000/api/register', credentials).then(res => {
-            }).catch(err => {
-                console.log(err)
-            })
-        },
+        // async register({ state }, credentials) {
+        //     await axios.post('http://127.0.0.1:8000/api/register', credentials)
+        //     .then( res => {
+        //         if(res.data.errors) {
+        //             // console.log(res.data.errors)
+        //             state.errors = res.data.errors
+        //             console.log(state.errors)
+        //         } else {
+        //             state.errors = null
+        //         }
+        //     })
+        //     .catch(err => {
+        //         console.log(err)
+        //     })
+        // },
 
         logoutAction({ commit }) {
             return axios.post('http://127.0.0.1:8000/api/logout')

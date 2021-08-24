@@ -33,12 +33,11 @@ import router from './router/router';
 import store from './store/store';
 import subscriber from './store/subscriber';
 
-
 import Vuex from 'vuex';
 Vue.use(Vuex);
 
-import VueCarousel from 'vue-carousel';
-Vue.use(VueCarousel);
+import "animate.css"
+
 
 store.dispatch('auth/attempt', localStorage.getItem('token')).then(() => {
 
@@ -46,10 +45,11 @@ store.dispatch('auth/attempt', localStorage.getItem('token')).then(() => {
         el: '#app',
         router,
         store,
-        // computed: Vuex.mapState(['todolists']),
     });
 
 })
+
+
 
 
 
